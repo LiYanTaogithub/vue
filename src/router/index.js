@@ -4,7 +4,7 @@
  * @Author: chunwen
  * @Date: 2021-11-09 22:36:47
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-14 23:27:36
+ * @LastEditTime: 2021-11-15 18:28:44
  */
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store'
@@ -81,15 +81,9 @@ const router = createRouter({
   routes,
 })
 
-// const whiteList = ['/login']
-
-// router.beforeEach(async (to, from, next) => {
-//   if (to.matched.length === 0) {
-//     window.history.pushState('', to.path, to.path)
-//   } else {
-//     next()
-//   }
-// })
+router.beforeEach(async (to, from, next) => {
+  next()
+})
 
 router.afterEach((to) => {
   const keepAliveComponentsName = store.getters['keepAlive/keepAliveComponentsName'] || []

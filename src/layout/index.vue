@@ -18,7 +18,7 @@
       </el-header>
       <!-- <Tabs v-show="showTabs" /> -->
       <el-main>
-        <router-view v-if="!store.state.app.isMicroApps" v-slot="{ Component, route }">
+        <router-view v-slot="{ Component, route }">
           <transition
             :name="route.meta.transition || 'fade-transform'"
             mode="out-in"
