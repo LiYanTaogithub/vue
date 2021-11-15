@@ -31,47 +31,47 @@
   </div>
 </template>
 
-<script lang="ts">
-import type { Ref } from 'vue'
-import Item from './item.vue'
-import { defineComponent, computed, unref, watch, reactive, ref, nextTick } from 'vue'
+<script>
+import {
+  defineComponent, computed, watch, reactive, ref, nextTick,
+} from 'vue'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
+import Item from './item.vue'
 import tabsHook from './tabsHook'
-interface ElScrollbar {
-  scrollbar: HTMLDivElement,
-  [propName: string]: any
-}
+
 export default defineComponent({
   components: {
-    Item
+    Item,
   },
   setup() {
     const store = useStore()
     const route = useRoute()
     const router = useRouter()
-    const scrollbarDom: Ref<ElScrollbar|null> = ref(null)
-    const allRoutes = router.options.routes
+    const scrollbarDom = ref(null)
     const defaultMenu = {
       path: '/dashboard',
-      meta: { title: 'message.menu.dashboard.index', hideClose: true }
+      meta: { title: 'message.menu.dashboard.index', hideClose: true },
     }
     const contentFullScreen = computed(() => store.state.app.contentFullScreen)
     const currentDisabled = computed(() => route.path === defaultMenu.path)
 
-    let activeMenu: any = reactive({ path: '' })
-    let menuList = ref(tabsHook.getItem())
+    let activeMenu = reactive({ path: '' })
+    const menuList = ref(tabsHook.getItem())
     if (menuList.value.length === 0) { // 判断之前有没有调用过
+      // eslint-disable-next-line no-use-before-define
       addMenu(defaultMenu)
-    } 
-    watch(menuList.value, (newVal: []) => {
+    }
+    watch(menuList.value, (newVal) => {
       tabsHook.setItem(newVal)
     })
-    watch(menuList, (newVal: []) => {
+    watch(menuList, (newVal) => {
       tabsHook.setItem(newVal)
     })
     router.afterEach(() => {
+      // eslint-disable-next-line no-use-before-define
       addMenu(route)
+      // eslint-disable-next-line no-use-before-define
       initMenu(route)
     })
 
@@ -81,14 +81,15 @@ export default defineComponent({
     }
     // 当前页面组件重新加载
     function pageReload() {
-      const self: any = route.matched[route.matched.length-1].instances.default
-      
-      self.handleReload();
+      const self = route.matched[route.matched.length - 1].instances.default
+
+      self.handleReload()
     }
 
     // 关闭当前标签，首页不关闭
     function closeCurrentRoute() {
       if (route.path !== defaultMenu.path) {
+        // eslint-disable-next-line no-use-before-define
         delMenu(route)
       }
     }
@@ -96,56 +97,59 @@ export default defineComponent({
     function closeOtherRoute() {
       menuList.value = [defaultMenu]
       if (route.path !== defaultMenu.path) {
+        // eslint-disable-next-line no-use-before-define
         addMenu(route)
       }
+      // eslint-disable-next-line no-use-before-define
       setKeepAliveData()
     }
 
     // 关闭所有的标签，除了首页
     function closeAllRoute() {
       menuList.value = [defaultMenu]
+      // eslint-disable-next-line no-use-before-define
       setKeepAliveData()
       router.push(defaultMenu.path)
     }
 
     // 添加新的菜单项
-    function addMenu(menu: any) {
-      let { path, meta, name } = menu
+    function addMenu(menu) {
+      const { path, meta, name } = menu
       if (meta.hideTabs) {
         return
       }
-      let hasMenu = menuList.value.some((obj: any) => {
-        return obj.path === path
-      })
+      const hasMenu = menuList.value.some((obj) => obj.path === path)
       if (!hasMenu) {
         menuList.value.push({
           path,
           meta,
-          name
+          name,
         })
       }
     }
 
     // 删除菜单项
-    function delMenu(menu: any) {
+    function delMenu(menu) {
       let index = 0
       if (!menu.meta.hideClose) {
         if (menu.meta.cache && menu.name) {
           store.commit('keepAlive/delKeepAliveComponentsName', menu.name)
         }
-        index = menuList.value.findIndex((item: any) => item.path === menu.path)
+        index = menuList.value.findIndex((item) => item.path === menu.path)
         console.log(index)
         menuList.value.splice(index, 1)
       }
       if (menu.path === activeMenu.path) {
+        // eslint-disable-next-line no-unused-expressions
         index - 1 > 0 ? router.push(menuList.value[index - 1].path) : router.push(defaultMenu.path)
       }
     }
 
     // 初始化activeMenu
-    function initMenu(menu: object) {
+    function initMenu(menu) {
       activeMenu = menu
       nextTick(() => {
+        // eslint-disable-next-line no-use-before-define
         setPosition()
       })
     }
@@ -153,11 +157,12 @@ export default defineComponent({
     function setPosition() {
       if (scrollbarDom.value) {
         const domBox = {
-          scrollbar: scrollbarDom.value.scrollbar.querySelector('.el-scrollbar__wrap ') as HTMLDivElement,
-          activeDom: scrollbarDom.value.scrollbar.querySelector('.active') as HTMLDivElement,
-          activeFather: scrollbarDom.value.scrollbar.querySelector('.el-scrollbar__view') as HTMLDivElement
+          scrollbar: scrollbarDom.value.scrollbar.querySelector('.el-scrollbar__wrap '),
+          activeDom: scrollbarDom.value.scrollbar.querySelector('.active'),
+          activeFather: scrollbarDom.value.scrollbar.querySelector('.el-scrollbar__view'),
         }
-        for (let i in domBox) {
+        // eslint-disable-next-line no-restricted-syntax
+        for (const i in domBox) {
           if (!domBox[i]) {
             return
           }
@@ -165,17 +170,19 @@ export default defineComponent({
         const domData = {
           scrollbar: domBox.scrollbar.getBoundingClientRect(),
           activeDom: domBox.activeDom.getBoundingClientRect(),
-          activeFather: domBox.activeFather.getBoundingClientRect()
+          activeFather: domBox.activeFather.getBoundingClientRect(),
         }
-        const num = domData.activeDom.x - domData.activeFather.x + 1/2 * domData.activeDom.width - 1/2 * domData.scrollbar.width
+        // eslint-disable-next-line no-mixed-operators
+        const num = domData.activeDom.x - domData.activeFather.x + 1 / 2 * domData.activeDom.width - 1 / 2 * domData.scrollbar.width
         domBox.scrollbar.scrollLeft = num
       }
     }
 
     // 配置需要缓存的数据
     function setKeepAliveData() {
-      let keepAliveNames: any[] = []
-      menuList.value.forEach((menu: any) => {
+      const keepAliveNames = []
+      menuList.value.forEach((menu) => {
+        // eslint-disable-next-line no-unused-expressions
         menu.meta && menu.meta.cache && menu.name && keepAliveNames.push(menu.name)
       })
       store.commit('keepAlive/setKeepAliveComponentsName', keepAliveNames)
@@ -196,9 +203,9 @@ export default defineComponent({
       closeCurrentRoute,
       closeOtherRoute,
       closeAllRoute,
-      currentDisabled
+      currentDisabled,
     }
-  }
+  },
 })
 </script>
 
