@@ -18,6 +18,9 @@
       </el-header>
       <!-- <Tabs v-show="showTabs" /> -->
       <el-main>
+        <!-- 微应用容器 -->
+        <div id="subapp-viewport"></div>
+
         <router-view v-slot="{ Component, route }">
           <transition
             :name="route.meta.transition || 'fade-transform'"
@@ -32,8 +35,6 @@
             <component v-else :is="Component" :key="route.fullPath" />
           </transition>
         </router-view>
-        <!-- 微应用容器 -->
-        <div id="subapp-viewport"></div>
       </el-main>
     </el-container>
   </el-container>
