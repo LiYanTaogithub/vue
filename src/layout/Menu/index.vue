@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import MenuItem from './MenuItem.vue'
@@ -32,6 +32,10 @@ export default defineComponent({
     const expandOneMenu = computed(() => store.state.app.expandOneMenu)
     const allRoutes = computed(() => store.state.app.menuList)
     const route = useRoute()
+    console.log('route=========', route)
+    watch(() => route, (newValue, oldValue) => {
+      console.log('==============', newValue, oldValue)
+    })
     const activeMenu = computed(() => {
       const { meta } = route
       if (meta.activeMenu) {
@@ -61,9 +65,8 @@ export default defineComponent({
       margin-left: 0px;
     }
     :deep() {
-      .el-menu-item, .el-sub-menu{
-        background-color: var(--system-menu-background) !important;
-      }
+      font-family: Arial, sans-serif;
+      font-weight: 400 !important;
       .el-menu-item i, .el-menu-item-group__title, .el-sub-menu__title i {
         color: var(--system-menu-text-color);
       }
@@ -114,4 +117,24 @@ export default defineComponent({
       }
     }
   }
+</style>
+<style lang="scss">
+.el-menu--vertical {
+  .el-menu-item, .el-sub-menu__title {
+    &.is-active {
+      background-color: var(--system-primary-color) !important;
+      color: var(--system-primary-text-color) !important;
+      i {
+        color: var(--system-primary-text-color) !important;
+      }
+      &:hover {
+        background-color: var(--system-primary-color) !important;
+        color: var(--system-primary-text-color) !important;
+      }
+    }
+    &:hover {
+      background-color: var(--system-menu-hover-background) !important;
+    }
+  }
+}
 </style>

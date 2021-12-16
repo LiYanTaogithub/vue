@@ -4,7 +4,7 @@
  * @Author: chunwen
  * @Date: 2021-11-09 23:11:39
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-14 13:01:54
+ * @LastEditTime: 2021-12-08 14:39:31
 -->
 <template>
   <template v-if="!menu.hideMenu">
@@ -88,11 +88,7 @@ export default defineComponent({
 
       return path
     })
-    const goto = (activeRule) => {
-      window.history.pushState(null, activeRule, activeRule)
-    }
     return {
-      goto,
       showMenuType,
       pathResolve,
     }

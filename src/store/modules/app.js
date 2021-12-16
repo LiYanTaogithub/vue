@@ -4,7 +4,7 @@
  * @Author: chunwen
  * @Date: 2021-11-10 14:48:40
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-14 15:52:21
+ * @LastEditTime: 2021-12-08 17:24:23
  */
 const data = () => ({
   isMicroApps: false,
@@ -102,12 +102,33 @@ const data = () => ({
       ],
     },
     {
-      path: '/micro_react/home',
+      path: '/micro_react',
       meta: {
         title: 'react微应用',
         icon: 'icon-bed',
         cache: true,
       },
+      alwayShow: true,
+      children: [
+        {
+          path: 'home',
+          meta: {
+            title: 'react1子应用',
+            icon: 'icon-wallpaper',
+            cache: true,
+          },
+        },
+        {
+          path: 'about',
+          hideMenu: true,
+          meta: {
+            title: 'react2子应用',
+            icon: 'icon-wallpaper',
+            cache: true,
+            activeMenu: '/micro_react/home',
+          },
+        },
+      ],
     },
   ],
 })
