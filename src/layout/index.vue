@@ -22,18 +22,13 @@
         <div id="subapp-viewport"></div>
 
         <router-view v-slot="{ Component, route }">
-          <transition
-            :name="route.meta.transition || 'fade-transform'"
-            mode="out-in"
+          <keep-alive
+            v-if="keepAliveComponentsName"
+            :include="keepAliveComponentsName"
           >
-            <keep-alive
-              v-if="keepAliveComponentsName"
-              :include="keepAliveComponentsName"
-            >
-              <component :is="Component" :key="route.fullPath" />
-            </keep-alive>
-            <component v-else :is="Component" :key="route.fullPath" />
-          </transition>
+            <component :is="Component" :key="route.fullPath" />
+          </keep-alive>
+          <component v-else :is="Component" :key="route.fullPath" />
         </router-view>
       </el-main>
     </el-container>

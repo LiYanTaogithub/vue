@@ -4,7 +4,7 @@
  * @Author: chunwen
  * @Date: 2021-11-09 22:36:47
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-13 12:59:32
+ * @LastEditTime: 2022-01-15 15:51:09
  */
 import { createApp } from 'vue'
 import ElementPlus from 'element-plus'
@@ -48,4 +48,9 @@ registerMicroApps(microApps, {
 
 })
 
-start()
+start({
+  sandbox: {
+    // qiankun提供的样式隔离方法（严格模式）
+    strictStyleIsolation: true,
+  },
+})

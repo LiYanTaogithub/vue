@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { defineComponent, computed, watch } from 'vue'
+import { defineComponent, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import MenuItem from './MenuItem.vue'
@@ -32,10 +32,7 @@ export default defineComponent({
     const expandOneMenu = computed(() => store.state.app.expandOneMenu)
     const allRoutes = computed(() => store.state.app.menuList)
     const route = useRoute()
-    console.log('route=========', route)
-    watch(() => route, (newValue, oldValue) => {
-      console.log('==============', newValue, oldValue)
-    })
+
     const activeMenu = computed(() => {
       const { meta } = route
       if (meta.activeMenu) {
