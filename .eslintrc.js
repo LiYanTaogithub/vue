@@ -4,7 +4,7 @@
  * @Author: chunwen
  * @Date: 2021-11-09 22:36:47
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-11 17:22:20
+ * @LastEditTime: 2022-03-26 17:46:50
  */
 module.exports = {
   root: true,
@@ -23,5 +23,6 @@ module.exports = {
     quotes: ["warn", "single"],
     "no-param-reassign": ["error", { props: false }],
     "import/no-cycle": [0, { maxDepth: 10 }],
+    "no-useless-return": 0
   },
 };

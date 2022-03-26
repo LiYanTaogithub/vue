@@ -18,9 +18,6 @@
       </el-header>
       <!-- <Tabs v-show="showTabs" /> -->
       <el-main>
-        <!-- 微应用容器 -->
-        <div id="subapp-viewport"></div>
-
         <router-view v-slot="{ Component, route }">
           <keep-alive
             v-if="keepAliveComponentsName"
