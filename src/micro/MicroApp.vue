@@ -4,7 +4,7 @@
  * @Author: chunwen
  * @Date: 2022-03-26 17:05:45
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-26 21:06:36
+ * @LastEditTime: 2022-03-26 21:23:30
 -->
 <template>
   <div>
@@ -51,6 +51,8 @@ export default {
     })
     onMounted(async () => {
       console.log('MicroApp ======> 进入')
+      if (window.qiankunStarted) return
+      window.qiankunStarted = true
       registerApps()
       activationHandleChange(route.path)
     })
