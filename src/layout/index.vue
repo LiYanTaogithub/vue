@@ -16,7 +16,7 @@
       <el-header>
         <Header />
       </el-header>
-      <!-- <Tabs v-show="showTabs" /> -->
+      <Tabs v-show="showTabs" />
       <el-main>
         <router-view v-slot="{ Component, route }">
           <keep-alive
@@ -36,18 +36,18 @@
 import { defineComponent, computed, onBeforeMount } from 'vue'
 import { useStore } from 'vuex'
 // import { useRouter } from 'vue-router'
-// import { useEventListener } from '@vueuse/core'
+import { useEventListener } from '@vueuse/core'
 import Menu from './Menu/index.vue'
 import Logo from './Logo/index.vue'
 import Header from './Header/index.vue'
-// import Tabs from './Tabs/index.vue'
+import Tabs from './Tabs/index.vue'
 
 export default defineComponent({
   components: {
     Menu,
     Logo,
     Header,
-    // Tabs,
+    Tabs,
   },
   setup() {
     const store = useStore()
@@ -55,22 +55,22 @@ export default defineComponent({
     const isCollapse = computed(() => store.state.app.isCollapse)
     // const contentFullScreen = computed(() => store.state.app.contentFullScreen)
     const showLogo = computed(() => store.state.app.showLogo)
-    // const showTabs = computed(() => store.state.app.showTabs)
+    const showTabs = computed(() => store.state.app.showTabs)
     const keepAliveComponentsName = computed(() => store.getters['keepAlive/keepAliveComponentsName'])
     // 页面宽度变化监听后执行的方法
-    // const resizeHandler = () => {
-    //   if (document.body.clientWidth <= 1000 && !isCollapse.value) {
-    //     store.commit('app/isCollapseChange', true)
-    //   } else if (document.body.clientWidth > 1000 && isCollapse.value) {
-    //     store.commit('app/isCollapseChange', false)
-    //   }
-    // }
+    const resizeHandler = () => {
+      if (document.body.clientWidth <= 1000 && !isCollapse.value) {
+        store.commit('app/isCollapseChange', true)
+      } else if (document.body.clientWidth > 1000 && isCollapse.value) {
+        store.commit('app/isCollapseChange', false)
+      }
+    }
     // // 初始化调用
-    // resizeHandler()
+    resizeHandler()
     // beforeMount
     onBeforeMount(() => {
       // 监听页面变化
-      // useEventListener('resize', resizeHandler)
+      useEventListener('resize', resizeHandler)
     })
     // methods
     // 隐藏菜单
@@ -81,7 +81,7 @@ export default defineComponent({
       store,
       isCollapse,
       showLogo,
-      // showTabs,
+      showTabs,
       // contentFullScreen,
       keepAliveComponentsName,
       hideMenu,

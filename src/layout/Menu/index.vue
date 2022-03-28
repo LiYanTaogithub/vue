@@ -64,6 +64,7 @@ export default defineComponent({
     :deep() {
       font-family: Arial, sans-serif;
       font-weight: 400 !important;
+      border-right: none;
       .el-menu-item i, .el-menu-item-group__title, .el-sub-menu__title i {
         color: var(--system-menu-text-color);
       }

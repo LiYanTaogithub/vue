@@ -4,7 +4,7 @@
  * @Author: chunwen
  * @Date: 2021-11-09 22:36:47
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-26 20:42:06
+ * @LastEditTime: 2022-03-28 15:14:17
  */
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store'
@@ -79,6 +79,10 @@ const routes = [
     name: 'MicroApp',
     meta: { title: '微前端应用' },
     component: () => import('@/micro/MicroApp.vue'),
+  },
+  {
+    path: '/',
+    redirect: '/home',
   },
 ]
 

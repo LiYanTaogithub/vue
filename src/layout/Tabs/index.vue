@@ -6,27 +6,27 @@
         :key="menu.meta.title"
         :menu="menu"
         :active="activeMenu.path === menu.path"
-        @close="delMenu(menu)"
-        @reload="pageReload"
+        @close-tag="delMenu(menu)"
       />
     </el-scrollbar>
     <div class="handle">
       <el-dropdown placement="bottom">
         <div class="el-dropdown-link">
+          <el-icon><more-filled /></el-icon>
           <i class="el-icon-arrow-down el-icon--right"></i>
         </div>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item icon="el-icon-refresh-left" @click="pageReload">{{ $t('message.system.tab.reload') }}</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-circle-close" :disabled="currentDisabled" @click="closeCurrentRoute">{{ $t('message.system.tab.closeCurrent') }}</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-circle-close" :disabled="menuList.length < 3" @click="closeOtherRoute">{{ $t('message.system.tab.closeOther') }}</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-circle-close" :disabled="menuList.length <= 1" @click="closeAllRoute">{{ $t('message.system.tab.closeAll') }}</el-dropdown-item>
+            <!-- <el-dropdown-item @click="pageReload">重新加载</el-dropdown-item> -->
+            <el-dropdown-item :disabled="currentDisabled" @click="closeCurrentRoute">关闭当前页面</el-dropdown-item>
+            <el-dropdown-item :disabled="menuList.length < 3" @click="closeOtherRoute">关闭其他页面</el-dropdown-item>
+            <el-dropdown-item :disabled="menuList.length <= 1" @click="closeAllRoute">关闭所有页面</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
-      <el-tooltip class="item" effect="dark" :content="contentFullScreen ? $t('message.system.fullScreenBack'):$t('message.system.fullScreen')" placement="bottom">
+      <!-- <el-tooltip class="item" effect="dark" :content="contentFullScreen ? 'message.system.fullScreenBack':'message.system.fullScreen'" placement="bottom">
         <i class="el-icon-full-screen" @click="onFullscreen"></i>
-      </el-tooltip>
+      </el-tooltip> -->
     </div>
   </div>
 </template>
@@ -35,6 +35,7 @@
 import {
   defineComponent, computed, watch, reactive, ref, nextTick,
 } from 'vue'
+import { MoreFilled } from '@element-plus/icons-vue'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 import Item from './item.vue'
@@ -43,6 +44,7 @@ import tabsHook from './tabsHook'
 export default defineComponent({
   components: {
     Item,
+    MoreFilled,
   },
   setup() {
     const store = useStore()
@@ -50,8 +52,9 @@ export default defineComponent({
     const router = useRouter()
     const scrollbarDom = ref(null)
     const defaultMenu = {
-      path: '/dashboard',
-      meta: { title: 'message.menu.dashboard.index', hideClose: true },
+      path: '/home',
+      name: 'Home',
+      meta: { title: '首页', hideClose: true },
     }
     const contentFullScreen = computed(() => store.state.app.contentFullScreen)
     const currentDisabled = computed(() => route.path === defaultMenu.path)
@@ -80,11 +83,10 @@ export default defineComponent({
       store.commit('app/contentFullScreenChange', !contentFullScreen.value)
     }
     // 当前页面组件重新加载
-    function pageReload() {
-      const self = route.matched[route.matched.length - 1].instances.default
-
-      self.handleReload()
-    }
+    // function pageReload() {
+    //   const self = route.matched[route.matched.length - 1].instances.default
+    //   self.handleReload()
+    // }
 
     // 关闭当前标签，首页不关闭
     function closeCurrentRoute() {
@@ -115,7 +117,7 @@ export default defineComponent({
     // 添加新的菜单项
     function addMenu(menu) {
       const { path, meta, name } = menu
-      if (meta.hideTabs) {
+      if (meta.hideTabs || path === '/') {
         return
       }
       const hasMenu = menuList.value.some((obj) => obj.path === path)
@@ -136,12 +138,15 @@ export default defineComponent({
           store.commit('keepAlive/delKeepAliveComponentsName', menu.name)
         }
         index = menuList.value.findIndex((item) => item.path === menu.path)
-        console.log(index)
         menuList.value.splice(index, 1)
       }
+
       if (menu.path === activeMenu.path) {
-        // eslint-disable-next-line no-unused-expressions
-        index - 1 > 0 ? router.push(menuList.value[index - 1].path) : router.push(defaultMenu.path)
+        if ((index - 1) > 0) {
+          router.push(menuList.value[index - 1].path)
+        } else {
+          router.push(defaultMenu.path)
+        }
       }
     }
 
@@ -157,9 +162,9 @@ export default defineComponent({
     function setPosition() {
       if (scrollbarDom.value) {
         const domBox = {
-          scrollbar: scrollbarDom.value.scrollbar.querySelector('.el-scrollbar__wrap '),
-          activeDom: scrollbarDom.value.scrollbar.querySelector('.active'),
-          activeFather: scrollbarDom.value.scrollbar.querySelector('.el-scrollbar__view'),
+          scrollbar: scrollbarDom.value.scrollbar$.querySelector('.el-scrollbar__wrap'),
+          activeDom: scrollbarDom.value.scrollbar$.querySelector('.active'),
+          activeFather: scrollbarDom.value.scrollbar$.querySelector('.el-scrollbar__view'),
         }
         // eslint-disable-next-line no-restricted-syntax
         for (const i in domBox) {
@@ -174,6 +179,7 @@ export default defineComponent({
         }
         // eslint-disable-next-line no-mixed-operators
         const num = domData.activeDom.x - domData.activeFather.x + 1 / 2 * domData.activeDom.width - 1 / 2 * domData.scrollbar.width
+        console.log(num)
         domBox.scrollbar.scrollLeft = num
       }
     }
@@ -194,7 +200,7 @@ export default defineComponent({
     return {
       contentFullScreen,
       onFullscreen,
-      pageReload,
+      // pageReload,
       scrollbarDom,
       // 菜单相关
       menuList,
@@ -212,20 +218,20 @@ export default defineComponent({
 <style lang="scss" scoped>
   .tabs {
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    height: 40px;
     background: var(--system-header-background);
     border-bottom: 1px solid var(--system-header-border-color);
     border-top: 1px solid var(--system-header-border-color);
     box-shadow: 0 1px 4px 0 rgba(0, 0, 0, .1);
+    height: 40px;
     .handle {
-      min-width: 95px;
+      min-width: 40px;
       height: 100%;
       display: flex;
       align-items: center;
       .el-dropdown-link {
-        margin-top: 5px;
         border-left: 1px solid var(--system-header-border-color);
         height: 25px;
         width: 40px;
@@ -239,6 +245,7 @@ export default defineComponent({
     }
   }
   .scroll-container {
+    height: inherit;
     white-space: nowrap;
     position: relative;
     overflow: hidden;
@@ -248,12 +255,13 @@ export default defineComponent({
         bottom: 0px;
       }
       .el-scrollbar__wrap {
-        height: 49px;
+        padding: 0 10px;
+        display: flex;
+        align-items: center;
       }
     }
   }
   .tags-view-container {
-    height: 34px;
     flex: 1;
     width: 100%;
     display: flex;

@@ -4,7 +4,7 @@
  * @Author: chunwen
  * @Date: 2021-11-01 17:24:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-26 21:06:06
+ * @LastEditTime: 2022-03-28 10:26:29
  */
 import { registerMicroApps, start } from 'qiankun'
 
@@ -55,6 +55,7 @@ export const registerApps = () => {
     sandbox: {
       // qiankun提供的样式隔离方法（严格模式）
       strictStyleIsolation: true,
+      experimentalStyleIsolation: true,
     },
   })
 }
