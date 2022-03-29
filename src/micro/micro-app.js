@@ -4,9 +4,10 @@
  * @Author: chunwen
  * @Date: 2021-11-01 17:24:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-28 10:26:29
+ * @LastEditTime: 2022-03-29 16:54:49
  */
 import { registerMicroApps, start } from 'qiankun'
+import store from '@/store'
 
 export const microApps = [
   {
@@ -16,6 +17,7 @@ export const microApps = [
     container: '#subapp1', // 子应用挂载的div
     props: {
       routerBase: '/micro_vue', // 下发路由给子应用，子应用根据该值去定义qiankun环境下的路由
+      store,
     },
   },
   {
@@ -25,6 +27,7 @@ export const microApps = [
     container: '#subapp2', // 子应用挂载的div
     props: {
       routerBase: '/micro_react',
+      store,
     },
   },
 ]
@@ -53,6 +56,8 @@ export const registerApps = () => {
 
   start({
     sandbox: {
+      // 默认开启预加载
+      prefetch: 'all',
       // qiankun提供的样式隔离方法（严格模式）
       strictStyleIsolation: true,
       experimentalStyleIsolation: true,
