@@ -4,13 +4,20 @@
  * @Author: chunwen
  * @Date: 2021-11-10 18:15:46
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-11 17:30:41
+ * @LastEditTime: 2022-03-29 15:04:34
  */
 import { loginApi, getInfoApi, loginOutApi } from '@/api/user'
 
 const data = () => ({
   token: '', // 登录token
-  info: {}, // 用户信息
+  info: {
+    avatar: 'https://img.caibeitv.com//caibeitv/upload/image/avatar/2016112/8214621/557d990/63841f6/9723bdbb80472d2b77bfe.jpg',
+    channelDescription: null,
+    email: 'chunwen.zou@caibeitv.com',
+    token: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjM4NDI2NjQwNTU0NGU5NWViNWExNGQiLCJpYXQiOjE2NDc5MzU5MjUsImV4cCI6MTY1MDUyNzkyNX0.Kg9H0L5hIhZZ7zNMqxtbUXA8P4AoOpAZXFfyYdZmWiY',
+    username: '邹春文',
+    age: 80,
+  }, // 用户信息
 })
 
 // getters
@@ -27,6 +34,9 @@ const mutations = {
   },
   infoChange(state, info) {
     state.info = info
+  },
+  addAge(state) {
+    state.info.age += 1
   },
 }
 
