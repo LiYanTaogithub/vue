@@ -24,9 +24,6 @@
           </el-dropdown-menu>
         </template>
       </el-dropdown>
-      <!-- <el-tooltip class="item" effect="dark" :content="contentFullScreen ? 'message.system.fullScreenBack':'message.system.fullScreen'" placement="bottom">
-        <i class="el-icon-full-screen" @click="onFullscreen"></i>
-      </el-tooltip> -->
     </div>
   </div>
 </template>
@@ -56,7 +53,6 @@ export default defineComponent({
       name: 'Home',
       meta: { title: '首页', hideClose: true },
     }
-    const contentFullScreen = computed(() => store.state.app.contentFullScreen)
     const currentDisabled = computed(() => route.path === defaultMenu.path)
 
     let activeMenu = reactive({ path: '' })
@@ -71,11 +67,6 @@ export default defineComponent({
       // eslint-disable-next-line no-use-before-define
       initMenu(route)
     })
-
-    // 全屏
-    function onFullscreen() {
-      store.commit('app/contentFullScreenChange', !contentFullScreen.value)
-    }
 
     // 关闭当前标签，首页不关闭
     function closeCurrentRoute() {
@@ -196,8 +187,6 @@ export default defineComponent({
     addMenu(route)
     initMenu(route)
     return {
-      contentFullScreen,
-      onFullscreen,
       // pageReload,
       scrollbarDom,
       // 菜单相关

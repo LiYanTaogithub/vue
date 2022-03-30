@@ -1,10 +1,5 @@
 <template>
   <el-container style="height: 100vh">
-    <!-- <div
-      class="mask"
-      v-show="!isCollapse && !contentFullScreen"
-      @click="hideMenu"
-    ></div> -->
     <el-aside
       :width="isCollapse ? '60px' : '250px'"
       :class="isCollapse ? 'hide-aside' : 'show-side'"
@@ -53,7 +48,6 @@ export default defineComponent({
     const store = useStore()
     // computed
     const isCollapse = computed(() => store.state.app.isCollapse)
-    // const contentFullScreen = computed(() => store.state.app.contentFullScreen)
     const showLogo = computed(() => store.state.app.showLogo)
     const showTabs = computed(() => store.state.app.showTabs)
     const keepAliveComponentsName = computed(() => store.getters['keepAlive/keepAliveComponentsName'])
@@ -72,19 +66,12 @@ export default defineComponent({
       // 监听页面变化
       useEventListener('resize', resizeHandler)
     })
-    // methods
-    // 隐藏菜单
-    const hideMenu = () => {
-      // store.commit('app/isCollapseChange', true)
-    }
     return {
       store,
       isCollapse,
       showLogo,
       showTabs,
-      // contentFullScreen,
       keepAliveComponentsName,
-      hideMenu,
     }
   },
 })
