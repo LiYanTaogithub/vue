@@ -4,7 +4,7 @@
  * @Author: chunwen
  * @Date: 2021-11-10 18:15:46
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-29 16:44:56
+ * @LastEditTime: 2022-03-30 18:11:13
  */
 
 const data = () => ({
@@ -21,23 +21,23 @@ const getters = {
 // mutations
 const mutations = {
   insertMenu(state, item) {
-    const hasMenu = state.menu.some((obj) => obj.path === item.path)
-    // eslint-disable-next-line no-unused-expressions
-    !hasMenu && state.menu.push(item)
-  },
-  resetMenu(state, item) {
-    state.menu = [item]
-  },
-  deleteOne(state, index) {
-    const menus = state.menu
-    menus.splice(index, 1)
-    state.menu = menus
+    state.menu.push(item)
   },
 }
 
 // actions
 const actions = {
-
+  invokeMicroRoute({ commit }, item) {
+    const tabs = JSON.parse(localStorage.getItem('tabs')) || []
+    const index = tabs.findIndex((obj) => obj.path === item.path)
+    if (index >= 0) {
+      tabs.splice(index, 1, item)
+    } else {
+      tabs.push(item)
+    }
+    commit('insertMenu', item)
+    localStorage.setItem('tabs', JSON.stringify(tabs))
+  },
 }
 
 export default {

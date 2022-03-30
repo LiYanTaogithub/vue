@@ -33,7 +33,7 @@
 
 <script>
 import {
-  defineComponent, computed, watch, reactive, ref, nextTick,
+  defineComponent, computed, reactive, ref, nextTick,
 } from 'vue'
 import { MoreFilled } from '@element-plus/icons-vue'
 import { useStore } from 'vuex'
@@ -65,12 +65,6 @@ export default defineComponent({
       // eslint-disable-next-line no-use-before-define
       addMenu(defaultMenu)
     }
-    watch(menuList.value, (newVal) => {
-      tabsHook.setItem(newVal)
-    })
-    watch(menuList, (newVal) => {
-      tabsHook.setItem(newVal)
-    })
     router.afterEach(() => {
       // eslint-disable-next-line no-use-before-define
       addMenu(route)
@@ -82,11 +76,6 @@ export default defineComponent({
     function onFullscreen() {
       store.commit('app/contentFullScreenChange', !contentFullScreen.value)
     }
-    // 当前页面组件重新加载
-    // function pageReload() {
-    //   const self = route.matched[route.matched.length - 1].instances.default
-    //   self.handleReload()
-    // }
 
     // 关闭当前标签，首页不关闭
     function closeCurrentRoute() {
@@ -95,9 +84,11 @@ export default defineComponent({
         delMenu(route)
       }
     }
+
     // 关闭除了当前标签之外的所有标签
     function closeOtherRoute() {
       menuList.value = [defaultMenu]
+      tabsHook.setItem(menuList.value)
       if (route.path !== defaultMenu.path) {
         // eslint-disable-next-line no-use-before-define
         addMenu(route)
@@ -109,6 +100,7 @@ export default defineComponent({
     // 关闭所有的标签，除了首页
     function closeAllRoute() {
       menuList.value = [defaultMenu]
+      tabsHook.setItem(menuList.value)
       // eslint-disable-next-line no-use-before-define
       setKeepAliveData()
       router.push(defaultMenu.path)
@@ -127,6 +119,7 @@ export default defineComponent({
           meta,
           name,
         })
+        tabsHook.setItem(menuList.value)
       }
     }
 
@@ -139,6 +132,7 @@ export default defineComponent({
         }
         index = menuList.value.findIndex((item) => item.path === menu.path)
         menuList.value.splice(index, 1)
+        tabsHook.setItem(menuList.value)
       }
 
       if (menu.path === activeMenu.path) {
@@ -179,7 +173,6 @@ export default defineComponent({
         }
         // eslint-disable-next-line no-mixed-operators
         const num = domData.activeDom.x - domData.activeFather.x + 1 / 2 * domData.activeDom.width - 1 / 2 * domData.scrollbar.width
-        console.log(num)
         domBox.scrollbar.scrollLeft = num
       }
     }
@@ -193,7 +186,12 @@ export default defineComponent({
       })
       store.commit('keepAlive/setKeepAliveComponentsName', keepAliveNames)
     }
-
+    // 监听
+    store.subscribe((mutation) => {
+      if (mutation.type === 'menuList/insertMenu') {
+        menuList.value = tabsHook.getItem()
+      }
+    })
     // 初始化时调用：1. 新增菜单 2. 初始化activeMenu
     addMenu(route)
     initMenu(route)
