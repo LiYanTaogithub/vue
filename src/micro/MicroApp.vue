@@ -4,7 +4,7 @@
  * @Author: chunwen
  * @Date: 2022-03-26 17:05:45
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-31 10:28:28
+ * @LastEditTime: 2022-03-31 10:39:45
 -->
 <template>
   <div
@@ -21,7 +21,7 @@
 import {
   onMounted, watch, reactive, onUnmounted,
 } from 'vue'
-import { loadMicroApp } from 'qiankun'
+import { loadMicroApp, addGlobalUncaughtErrorHandler } from 'qiankun'
 
 import { useRoute } from 'vue-router'
 import { microApps, registerApps } from '@/micro/micro-app'
@@ -50,6 +50,8 @@ export default {
         console.error('=======', e)
       }
     }
+    // qiankun全局异常捕获
+    addGlobalUncaughtErrorHandler((event) => console.log(event))
     watch(() => route.path, async (newValue) => {
       activationHandleChange(newValue)
     })
