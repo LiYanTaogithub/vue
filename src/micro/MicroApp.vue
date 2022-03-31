@@ -4,10 +4,14 @@
  * @Author: chunwen
  * @Date: 2022-03-26 17:05:45
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-26 21:23:30
+ * @LastEditTime: 2022-03-31 10:28:28
 -->
 <template>
-  <div>
+  <div
+    class="micro-container"
+    v-loading="$store.state.app.isLoadingMicro"
+    element-loading-text="Loading..."
+  >
     <div id="subapp1"></div>
     <div id="subapp2"></div>
   </div>
@@ -62,7 +66,13 @@ export default {
         mic.unmount()
       })
     })
-    return {}
+    return {
+    }
   },
 }
 </script>
+<style lang="scss" scoped>
+.micro-container{
+  height: inherit;
+}
+</style>

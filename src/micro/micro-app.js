@@ -4,7 +4,7 @@
  * @Author: chunwen
  * @Date: 2021-11-01 17:24:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-29 16:54:49
+ * @LastEditTime: 2022-03-31 10:17:09
  */
 import { registerMicroApps, start } from 'qiankun'
 import store from '@/store'
@@ -17,7 +17,7 @@ export const microApps = [
     container: '#subapp1', // 子应用挂载的div
     props: {
       routerBase: '/micro_vue', // 下发路由给子应用，子应用根据该值去定义qiankun环境下的路由
-      store,
+      mainStore: store,
     },
   },
   {
@@ -27,7 +27,7 @@ export const microApps = [
     container: '#subapp2', // 子应用挂载的div
     props: {
       routerBase: '/micro_react',
-      store,
+      mainStore: store,
     },
   },
 ]
@@ -35,6 +35,7 @@ export const microApps = [
 export const registerApps = () => {
   registerMicroApps(microApps, {
     beforeLoad: (app) => {
+      store.commit('app/loadingMicro', true)
       console.log('before load app.name====>>>>>', app.name)
     },
     beforeMount: [
@@ -44,6 +45,7 @@ export const registerApps = () => {
     ],
     afterMount: [
       (app) => {
+        store.commit('app/loadingMicro', false)
         console.log('[LifeCycle] after mount %c%s', 'color: green;', app.name)
       },
     ],

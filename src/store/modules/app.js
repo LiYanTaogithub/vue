@@ -4,13 +4,14 @@
  * @Author: chunwen
  * @Date: 2021-11-10 14:48:40
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-30 18:29:52
+ * @LastEditTime: 2022-03-31 10:16:01
  */
 const data = () => ({
   isCollapse: false, // 侧边栏是否收缩展示
   showLogo: true, // 是否显示Logo
   showTabs: true, // 是否显示导航历史
   expandOneMenu: true, // 一次是否只能展开一个菜单
+  isLoadingMicro: false, // 是否正在加载子应用
   lang: '', // 默认采用的国际化方案,初次进入，采用浏览器当前设置的语言，默认采用中文
   theme: {
     state: {
@@ -139,6 +140,9 @@ const mutations = {
   },
   stateChange(state, option) {
     state[option.name] = option.value
+  },
+  loadingMicro(state, payload) {
+    state.isLoadingMicro = payload
   },
 }
 
