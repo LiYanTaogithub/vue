@@ -20,16 +20,16 @@ export const microApps = [
       mainStore: store,
     },
   },
-  {
-    name: 'micro_react',
-    entry: '//localhost:4002',
-    activeRule: '/micro_react',
-    container: '#subapp2', // 子应用挂载的div
-    props: {
-      routerBase: '/micro_react',
-      mainStore: store,
-    },
-  },
+  // {
+  //   name: 'micro_react',
+  //   entry: '//localhost:4002',
+  //   activeRule: '/micro_react',
+  //   container: '#subapp2', // 子应用挂载的div
+  //   props: {
+  //     routerBase: '/micro_react',
+  //     mainStore: store,
+  //   },
+  // },
 ]
 
 export const registerApps = () => {

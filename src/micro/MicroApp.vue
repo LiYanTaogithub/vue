@@ -32,6 +32,7 @@ export default {
     const microList = reactive({})
     const route = useRoute()
     const activationHandleChange = async (path) => {
+      console.log('加载当前子应用')
       const activeRules = microApps.map((app) => app.activeRule)
       const isMicro = activeRules.some((rule) => path.startsWith(rule))
       if (!isMicro) return
@@ -56,13 +57,17 @@ export default {
       activationHandleChange(newValue)
     })
     onMounted(async () => {
-      console.log('MicroApp ======> 进入')
+      // window.qiankunStarted = true
+      console.log('主应用**********MicroApp ======> 进入')
+      console.log('子应用加载之前window.qiankunStarted', window.qiankunStarted)
       if (window.qiankunStarted) return
       window.qiankunStarted = true
+      console.log('子应用加载之后window.qiankunStarted', window.qiankunStarted)
       registerApps()
-      activationHandleChange(route.path)
+      // activationHandleChange(route.path)
     })
     onUnmounted(() => {
+      console.log('卸载onUnmounted')
       window.qiankunStarted = false
       Object.values(microList).forEach((mic) => {
         mic.unmount()

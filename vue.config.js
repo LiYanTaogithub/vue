@@ -22,13 +22,20 @@ module.exports = {
     port: 4000,
     // historyApiFallback: true,
     proxy: {
-      '/api': {
-        target: 'http://localhost:8888',
+      '/insurance-sys-web': {
+        target: 'http://manage-system-dev.test.shiqiao.com',
         changeOrigin: true,
-        pathRewrite: {
-          '^/api': '',
-        },
+        // pathRewrite: {
+        //   '^/insurance-sys-web': '',
+        // },
       },
     },
+    // proxy: {
+    //   '/insurance-sys-web': {
+    //     ws: false,
+    //     target: 'http://manage-system-dev.test.shiqiao.com',
+    //     // target: 'http://10.20.7.174:8080' // 老得请求地址需要ip换域名 废弃ip配置
+    //   },
+    // },
   },
 }
